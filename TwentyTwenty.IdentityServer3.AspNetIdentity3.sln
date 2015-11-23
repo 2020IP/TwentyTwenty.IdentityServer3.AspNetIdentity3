@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24627.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TwentyTwenty.IdentityServer3.AspNetIdentity3", "TwentyTwenty.IdentityServer3.AspNetIdentity3\TwentyTwenty.IdentityServer3.AspNetIdentity3.xproj", "{A10C98BD-DF1C-41D6-84D2-47CFFA059940}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TwentyTwenty.IdentityServer3.AspNetIdentity3", "src\TwentyTwenty.IdentityServer3.AspNetIdentity3\TwentyTwenty.IdentityServer3.AspNetIdentity3.xproj", "{A10C98BD-DF1C-41D6-84D2-47CFFA059940}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
