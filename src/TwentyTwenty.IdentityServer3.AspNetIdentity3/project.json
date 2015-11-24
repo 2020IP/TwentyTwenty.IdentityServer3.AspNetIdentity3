@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "TwentyTwenty.IdentityServer3.AspNetIdentity3 Class Library",
   "authors": [ "ericgreen" ],
@@ -12,6 +12,7 @@
     "net451": { }
   },
   "dependencies": {
+    "IdentityModel": "1.2.1",
     "IdentityServer3": "2.2.0",
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final"
   }
