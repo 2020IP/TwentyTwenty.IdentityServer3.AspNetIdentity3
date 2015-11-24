@@ -12,7 +12,7 @@ using IdentityModel;
 
 namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
 {
-    public class AspNetIdentity3Plugin<TUser, TKey> : UserServiceBase
+    public class AspNetIdentity3Plugin<TUser> : UserServiceBase
         where TUser : class, IUser, new()
     {
         private readonly UserManager<TUser> _userManager;
@@ -22,7 +22,6 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         public AspNetIdentity3Plugin(UserManager<TUser> userManager, AspNetIdentityPluginOptions options)
         {
             _userManager = userManager;
-
             _enableSecurityStamp = options.EnableSecurityStamp;
             _displayNameClaimType = options.DisplayNameClaimType;
         }
