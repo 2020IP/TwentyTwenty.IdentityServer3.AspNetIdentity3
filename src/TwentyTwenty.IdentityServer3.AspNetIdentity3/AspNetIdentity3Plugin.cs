@@ -16,17 +16,16 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         where TUser : class, IUser, new()
     {
         private readonly UserManager<TUser> _userManager;
+        private readonly bool _enableSecurityStamp;
+        private readonly string _displayNameClaimType;
 
-        public AspNetIdentity3Plugin(UserManager<TUser> userManager)
+        public AspNetIdentity3Plugin(UserManager<TUser> userManager, AspNetIdentityPluginOptions options)
         {
             _userManager = userManager;
 
-            EnableSecurityStamp = true;
+            _enableSecurityStamp = options.EnableSecurityStamp;
+            _displayNameClaimType = options.DisplayNameClaimType;
         }
-
-        public string DisplayNameClaimType { get; set; }
-
-        public bool EnableSecurityStamp { get; set; }
 
         public override async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
@@ -123,7 +122,7 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
 
             if (acct != null)
             {
-                if (EnableSecurityStamp && _userManager.SupportsUserSecurityStamp)
+                if (_enableSecurityStamp && _userManager.SupportsUserSecurityStamp)
                 {
                     var security_stamp = subject.Claims.Where(x => x.Type == "security_stamp").Select(x => x.Value).SingleOrDefault();
                     if (security_stamp != null)
@@ -208,7 +207,7 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         protected virtual async Task<IEnumerable<Claim>> GetClaimsForAuthenticateResult(TUser user)
         {
             var claims = new List<Claim>();
-            if (EnableSecurityStamp && _userManager.SupportsUserSecurityStamp)
+            if (_enableSecurityStamp && _userManager.SupportsUserSecurityStamp)
             {
                 var stamp = await _userManager.GetSecurityStampAsync(user);
                 if (!String.IsNullOrWhiteSpace(stamp))
@@ -226,9 +225,9 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             var claims = await GetClaimsFromAccount(user);
 
             Claim nameClaim = null;
-            if (DisplayNameClaimType != null)
+            if (_displayNameClaimType != null)
             {
-                nameClaim = claims.FirstOrDefault(x => x.Type == DisplayNameClaimType);
+                nameClaim = claims.FirstOrDefault(x => x.Type == _displayNameClaimType);
             }
             if (nameClaim == null) nameClaim = claims.FirstOrDefault(x => x.Type == Constants.ClaimTypes.Name);
             if (nameClaim == null) nameClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
@@ -253,7 +252,8 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
                 }
             }
 
-            var externalLogin = new UserLoginInfo(provider, providerId, null);
+            var externalLogin = 
+                new UserLoginInfo(provider, providerId, await GetDisplayNameForAccountAsync(user.Id));
             var addExternalResult = await _userManager.AddLoginAsync(user, externalLogin);
             if (!addExternalResult.Succeeded)
             {
