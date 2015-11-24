@@ -111,9 +111,33 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             }
         }
 
-        public override Task IsActiveAsync(IsActiveContext context)
+        public override async Task IsActiveAsync(IsActiveContext context)
         {
-            return base.IsActiveAsync(context);
+            var subject = context.Subject;
+
+            if (subject == null) throw new ArgumentNullException("subject");
+
+            var acct = await _userManager.FindByIdAsync(subject.GetSubjectId());
+
+            context.IsActive = false;
+
+            if (acct != null)
+            {
+                if (EnableSecurityStamp && _userManager.SupportsUserSecurityStamp)
+                {
+                    var security_stamp = subject.Claims.Where(x => x.Type == "security_stamp").Select(x => x.Value).SingleOrDefault();
+                    if (security_stamp != null)
+                    {
+                        var db_security_stamp = await _userManager.GetSecurityStampAsync(acct);
+                        if (db_security_stamp != security_stamp)
+                        {
+                            return;
+                        }
+                    }
+                }
+
+                context.IsActive = true;
+            }
         }
 
         public override Task PostAuthenticateAsync(PostAuthenticationContext context)
