@@ -9,11 +9,12 @@ using System.Security.Claims;
 using IdentityServer3.Core;
 using IdentityServer3.Core.Extensions;
 using IdentityModel;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
 {
     public class AspNetIdentity3Plugin<TUser> : UserServiceBase
-        where TUser : class, IUser, new()
+        where TUser : IdentityUser<string>, new()
     {
         private readonly UserManager<TUser> _userManager;
         private readonly bool _enableSecurityStamp;
