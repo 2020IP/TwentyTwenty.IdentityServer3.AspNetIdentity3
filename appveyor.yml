@@ -1,9 +1,48 @@
-init:
-  - git config --global core.autocrlf true
-build_script:
-  - build.cmd --quiet --parallel verify
-artifacts:
-  - path: 'artifacts\build\*.nupkg'
-clone_depth: 1
-test: off
-deploy: off
+-
+  version: 0.9.2
+  branches:
+    only:
+      - master
+  environment:
+    access_token:
+      secure: n4qJoRUDklslW0+q340r9KxlmPi4A5KYDVv5u43Osz4Arey38cBEw7MJaKGOLtXf
+  configuration: Release
+  init:
+    - git config --global core.autocrlf true
+  install:
+    - npm install
+    - node build\aspnet5-version.js
+  build_script:
+    - build.cmd --quiet --parallel verify
+  artifacts:
+    - path: 'artifacts\build\*.nupkg'
+  clone_depth: 1
+  test: off
+  deploy:
+    provider: NuGet
+    api_key:
+      secure: 6LqavZsVwaAsuw6SK7XKQRuMzqb9pedzqVK7AI0+j3w51bN1FOu7Fi2l2Fj6bmu/
+    artifact: /.*\.nupkg/
+  on_success:
+    - git config --global credential.helper store
+    - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+    - git config --global user.email "jarroda@2020research.com"
+    - git config --global user.name "Appveyor"
+    - git checkout master
+    - git commit -m "[skip ci] Appveyor version update." appveyor.yml
+    - git push origin master
+-
+  version: 0.9.2
+  configuration: Debug
+  init:
+    - git config --global core.autocrlf true
+  install:
+    - npm install
+    - node build\aspnet5-version.js
+  build_script:
+    - build.cmd --quiet --parallel verify
+  artifacts:
+    - path: 'artifacts\build\*.nupkg'
+  clone_depth: 1
+  test: off
+  deploy: off

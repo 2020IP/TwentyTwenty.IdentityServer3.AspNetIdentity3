@@ -9,11 +9,13 @@ using System.Security.Claims;
 using IdentityServer3.Core;
 using IdentityServer3.Core.Extensions;
 using IdentityModel;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
 {
-    public class AspNetIdentity3Plugin<TUser> : UserServiceBase
-        where TUser : class, IUser, new()
+    public class AspNetIdentity3Plugin<TUser, TId> : UserServiceBase
+        where TUser : IdentityUser<TId>, new()
+        where TId : IEquatable<TId>
     {
         private readonly UserManager<TUser> _userManager;
         private readonly bool _enableSecurityStamp;
@@ -218,9 +220,9 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             return claims;
         }
 
-        protected virtual async Task<string> GetDisplayNameForAccountAsync(string userID)
+        protected virtual async Task<string> GetDisplayNameForAccountAsync(TId userID)
         {
-            var user = await _userManager.FindByIdAsync(userID);
+            var user = await _userManager.FindByIdAsync(userID.ToString());
             var claims = await GetClaimsFromAccount(user);
 
             Claim nameClaim = null;
@@ -284,9 +286,9 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             return await UpdateAccountFromExternalClaimsAsync(user, provider, providerId, claims);
         }
 
-        protected virtual async Task<AuthenticateResult> SignInFromExternalProviderAsync(string userID, string provider)
+        protected virtual async Task<AuthenticateResult> SignInFromExternalProviderAsync(TId userID, string provider)
         {
-            var user = await _userManager.FindByIdAsync(userID);
+            var user = await _userManager.FindByIdAsync(userID.ToString());
             var claims = await GetClaimsForAuthenticateResult(user);
 
             return new AuthenticateResult(
@@ -315,7 +317,7 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             return null;
         }
 
-        protected virtual async Task<AuthenticateResult> ProcessExistingExternalAccountAsync(string userId, string provider, string providerId, IEnumerable<Claim> claims)
+        protected virtual async Task<AuthenticateResult> ProcessExistingExternalAccountAsync(TId userId, string provider, string providerId, IEnumerable<Claim> claims)
         {
             return await SignInFromExternalProviderAsync(userId, provider);
         }
