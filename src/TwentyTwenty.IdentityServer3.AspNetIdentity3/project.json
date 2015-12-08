@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "IdentityModel": "1.2.1",
-    "IdentityServer3": "2.2.0",
+    "IdentityServer3": "2.2.3",
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final"
   },
   "frameworks": {
