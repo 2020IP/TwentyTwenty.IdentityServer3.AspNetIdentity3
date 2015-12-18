@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using TwentyTwenty.IdentityServer3.AspNetIdentity3;
 
-namespace TwentyTwenty.Identity.Extensions
+namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
 {
     public static class IdentityServerServiceFactoryExtensions
     {
