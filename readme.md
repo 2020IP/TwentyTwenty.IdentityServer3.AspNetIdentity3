@@ -3,6 +3,7 @@
 ###AspNet Identity 3 user management plugin for [IdentityServer v3](https://github.com/IdentityServer/IdentityServer3)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ke4calvrfpuehri2/branch/master?svg=true)](https://ci.appveyor.com/project/2020IP/twentytwenty-identityserver3-aspnetidentity3)
+[![NuGet](https://img.shields.io/nuget/v/TwentyTwenty.IdentityServer3.AspNetIdentity3.svg)](https://www.nuget.org/packages/TwentyTwenty.IdentityServer3.AspNetIdentity3/)
 
 ####Usage
 _The following usage uses a Guid as the Key type._
