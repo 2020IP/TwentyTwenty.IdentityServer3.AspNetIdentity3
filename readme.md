@@ -48,6 +48,11 @@ public class UserService : AspNetIdentity3Plugin<User, Guid>
 	}
 }
 ```
+NOTE: In the UserService class you will most likely need to override the following methods to fit your custom implementation:
+`UpdateAccountFromExternalClaimsAsync`
+`InstantiateNewUserFromExternalProviderAsync`
+`TryGetExistingUserFromExternalProviderClaimsAsync`
+
 In the `Startup.cs` register your Identity Context with Entity Framework,
 register your custom services and add Identity to the services
 ```

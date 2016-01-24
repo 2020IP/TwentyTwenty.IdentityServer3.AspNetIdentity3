@@ -140,16 +140,19 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             }
         }
 
+        // Base does nothing
         public override Task PostAuthenticateAsync(PostAuthenticationContext context)
         {
             return base.PostAuthenticateAsync(context);
         }
 
+        // Base does nothing
         public override Task PreAuthenticateAsync(PreAuthenticationContext context)
         {
             return base.PreAuthenticateAsync(context);
         }
 
+        // Base does nothing
         public override Task SignOutAsync(SignOutContext context)
         {
             return base.SignOutAsync(context);
