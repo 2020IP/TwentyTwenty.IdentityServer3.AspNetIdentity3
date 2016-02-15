@@ -5,5 +5,7 @@
         public string DisplayNameClaimType { get; set; }
 
         public bool EnableSecurityStamp { get; set; } = true;
+
+        public bool DisableExternalAccountCreation { get; set; }
     }
 }

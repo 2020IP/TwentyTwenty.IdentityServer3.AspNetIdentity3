@@ -20,12 +20,14 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         private readonly UserManager<TUser> _userManager;
         private readonly bool _enableSecurityStamp;
         private readonly string _displayNameClaimType;
+        private readonly bool _disableExternalAccountCreation;
 
         public AspNetIdentity3Plugin(UserManager<TUser> userManager, AspNetIdentityPluginOptions options)
         {
             _userManager = userManager;
             _enableSecurityStamp = options.EnableSecurityStamp;
             _displayNameClaimType = options.DisplayNameClaimType;
+            _disableExternalAccountCreation = options.DisableExternalAccountCreation;
         }
 
         public override async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -243,11 +245,18 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         protected virtual async Task<AuthenticateResult> ProcessNewExternalAccountAsync(string provider, string providerId, IEnumerable<Claim> claims)
         {
             var user = await TryGetExistingUserFromExternalProviderClaimsAsync(provider, claims);
-            if (user == null)
+
+            if (user == null && _disableExternalAccountCreation)
+            {
+                return new AuthenticateResult($"No account found for the provided {provider} email.");
+            }
+            else if (user == null)
             {
                 user = await InstantiateNewUserFromExternalProviderAsync(provider, providerId, claims);
                 if (user == null)
+                {
                     throw new InvalidOperationException("CreateNewAccountFromExternalProvider returned null");
+                }
 
                 var createResult = await _userManager.CreateAsync(user);
                 if (!createResult.Succeeded)
