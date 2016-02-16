@@ -4,7 +4,7 @@
   "description": "AspNet Identity 3 IUserService for IdentityServer3",
   "authors": [ "2020IP" ],
   "iconUrl": "https://avatars3.githubusercontent.com/u/15891935?v=3&s=64",
-  "tags": [ "IdentityServer Identity EF ASP.NET EntityFramework Claims Identity3 2020" ],
+  "tags": [ "IdentityServer Identity EF ASP.NET EntityFramework Claims Identity3 2020 aspnet" ],
   "projectUrl": "https://github.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3",
   "licenseUrl": "https://raw.githubusercontent.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3/master/LICENSE.txt",
   "tooling": {

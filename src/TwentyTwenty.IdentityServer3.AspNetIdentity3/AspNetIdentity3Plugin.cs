@@ -20,12 +20,14 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         private readonly UserManager<TUser> _userManager;
         private readonly bool _enableSecurityStamp;
         private readonly string _displayNameClaimType;
+        private readonly bool _disableExternalAccountCreation;
 
         public AspNetIdentity3Plugin(UserManager<TUser> userManager, AspNetIdentityPluginOptions options)
         {
             _userManager = userManager;
             _enableSecurityStamp = options.EnableSecurityStamp;
             _displayNameClaimType = options.DisplayNameClaimType;
+            _disableExternalAccountCreation = options.DisableExternalAccountCreation;
         }
 
         public override async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -140,16 +142,19 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             }
         }
 
+        // Base does nothing
         public override Task PostAuthenticateAsync(PostAuthenticationContext context)
         {
             return base.PostAuthenticateAsync(context);
         }
 
+        // Base does nothing
         public override Task PreAuthenticateAsync(PreAuthenticationContext context)
         {
             return base.PreAuthenticateAsync(context);
         }
 
+        // Base does nothing
         public override Task SignOutAsync(SignOutContext context)
         {
             return base.SignOutAsync(context);
@@ -240,11 +245,18 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
         protected virtual async Task<AuthenticateResult> ProcessNewExternalAccountAsync(string provider, string providerId, IEnumerable<Claim> claims)
         {
             var user = await TryGetExistingUserFromExternalProviderClaimsAsync(provider, claims);
-            if (user == null)
+
+            if (user == null && _disableExternalAccountCreation)
+            {
+                return new AuthenticateResult($"No account found for the provided {provider} email.");
+            }
+            else if (user == null)
             {
                 user = await InstantiateNewUserFromExternalProviderAsync(provider, providerId, claims);
                 if (user == null)
+                {
                     throw new InvalidOperationException("CreateNewAccountFromExternalProvider returned null");
+                }
 
                 var createResult = await _userManager.CreateAsync(user);
                 if (!createResult.Succeeded)
@@ -267,12 +279,26 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             return await SignInFromExternalProviderAsync(user.Id, provider);
         }
 
+        /// <summary>
+        /// Override this method to configure how new users are created from an external provider
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="providerId"></param>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         protected virtual Task<TUser> InstantiateNewUserFromExternalProviderAsync(string provider, string providerId, IEnumerable<Claim> claims)
         {
             var user = new TUser() { UserName = Guid.NewGuid().ToString("N") };
             return Task.FromResult(user);
         }
 
+
+        /// <summary>
+        /// Override this method to build how existing users are retrieved from external provider claims
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         protected virtual Task<TUser> TryGetExistingUserFromExternalProviderClaimsAsync(string provider, IEnumerable<Claim> claims)
         {
             return Task.FromResult<TUser>(null);
