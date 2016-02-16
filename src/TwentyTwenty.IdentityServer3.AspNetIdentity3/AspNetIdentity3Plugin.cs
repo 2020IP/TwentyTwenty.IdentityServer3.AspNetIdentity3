@@ -279,12 +279,26 @@ namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
             return await SignInFromExternalProviderAsync(user.Id, provider);
         }
 
+        /// <summary>
+        /// Override this method to configure how new users are created from an external provider
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="providerId"></param>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         protected virtual Task<TUser> InstantiateNewUserFromExternalProviderAsync(string provider, string providerId, IEnumerable<Claim> claims)
         {
             var user = new TUser() { UserName = Guid.NewGuid().ToString("N") };
             return Task.FromResult(user);
         }
 
+
+        /// <summary>
+        /// Override this method to build how existing users are retrieved from external provider claims
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         protected virtual Task<TUser> TryGetExistingUserFromExternalProviderClaimsAsync(string provider, IEnumerable<Claim> claims)
         {
             return Task.FromResult<TUser>(null);
