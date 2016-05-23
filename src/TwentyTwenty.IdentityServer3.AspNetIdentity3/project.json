@@ -3,23 +3,27 @@
   "title": "20|20 IdentityServer3.AspNetIdentity3",
   "description": "AspNet Identity 3 IUserService for IdentityServer3",
   "authors": [ "2020IP" ],
-  "iconUrl": "https://avatars3.githubusercontent.com/u/15891935?v=3&s=64",
-  "tags": [ "IdentityServer Identity EF ASP.NET EntityFramework Claims Identity3 2020 aspnet" ],
-  "projectUrl": "https://github.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3",
-  "licenseUrl": "https://raw.githubusercontent.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3/master/LICENSE.txt",
+
+  "packOptions": {
+    "iconUrl": "https://avatars3.githubusercontent.com/u/15891935?v=3&s=64",
+    "tags": [ "IdentityServer Identity EF ASP.NET EntityFramework Claims Identity3 2020 aspnet" ],
+    "projectUrl": "https://github.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3",
+    "licenseUrl": "https://raw.githubusercontent.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3/master/LICENSE.txt",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3"
+    }
+  },
+
   "tooling": {
     "defaultNamespace": "TwentyTwenty.IdentityServer3.EntityFramework7"
   },
   "dependencies": {
     "IdentityModel": "1.2.1",
     "IdentityServer3": "2.2.3",
-    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final"
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0-rc2-final"
   },
   "frameworks": {
     "net451": { }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/2020IP/TwentyTwenty.IdentityServer3.AspNetIdentity3"
   }
 }

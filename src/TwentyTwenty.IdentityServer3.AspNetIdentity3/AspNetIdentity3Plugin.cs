@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer3.Core.Models;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using IdentityServer3.Core;
 using IdentityServer3.Core.Extensions;
 using IdentityModel;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TwentyTwenty.IdentityServer3.AspNetIdentity3
 {
